@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.database import Base, engine
 from . import models
+from .routers import auth
 
 try:
     Base.metadata.create_all(bind=engine)
@@ -13,3 +14,6 @@ app = FastAPI()
 @app.get("/")
 def message():
     return {"message": "API RUNNING"}
+
+
+app.include_router(auth.router)
