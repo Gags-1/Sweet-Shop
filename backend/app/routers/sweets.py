@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Sweet, User
 from app.schemas import SweetCreate, SweetResponse
-from app.utils import get_current_user
+from app.utils import get_current_user,get_current_admin
 from typing import Optional
 
 router = APIRouter(prefix="/api/sweets", tags=["sweets"])
@@ -101,7 +101,7 @@ def update_sweet(sweet_id: int,sweet: SweetCreate,db: Session = Depends(get_db),
 def delete_sweet(
     sweet_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_admin) 
 ):
     db_sweet = db.query(Sweet).filter(Sweet.id == sweet_id).first()
     

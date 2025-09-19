@@ -10,8 +10,8 @@ def test_delete_sweet():
     token = login_response.json()["access_token"]
     
     # Get a sweet to delete
-    sweets_response = client.get("/api/sweets")
-    sweet_id = sweets_response.json()[0]["id"]
+    # sweets_response = client.get("/api/sweets")
+    sweet_id = 3
     
     # Try to delete
     response = client.delete(
