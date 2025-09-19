@@ -5,7 +5,7 @@ client = TestClient(app)
 def test_delete_sweet():
     """Test deleting a sweet - This will FAIL initially"""
     # First login
-    login_data = {"username": "sweetuser", "password": "sweetpass123"}
+    login_data = {"email": "magan@example.com", "password": "string"}
     login_response = client.post("/api/auth/login", json=login_data)
     token = login_response.json()["access_token"]
     
