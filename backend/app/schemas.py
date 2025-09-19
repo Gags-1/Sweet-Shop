@@ -33,3 +33,9 @@ class SweetResponse(SweetBase):
     id: int
     class Config:
         from_attributes = True
+
+class RestockRequest(BaseModel):
+    quantity: int
+
+class PurchaseRequest(BaseModel):
+    quantity: int

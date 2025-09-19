@@ -3,13 +3,12 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from app.database import get_db
 from app.models import Sweet, User
-from app.schemas import SweetResponse
-from app.utils import get_current_user
+from app.schemas import SweetResponse,RestockRequest,PurchaseRequest
+from app.utils import get_current_user,get_current_admin
 
 router = APIRouter(prefix="/api/sweets", tags=["inventory"])
 
-class PurchaseRequest(BaseModel):
-    quantity: int
+
 
 @router.post("/{sweet_id}/purchase", response_model=SweetResponse)
 def purchase_sweet(
@@ -40,6 +39,34 @@ def purchase_sweet(
     
     # Update quantity
     db_sweet.quantity -= purchase.quantity
+    db.commit()
+    db.refresh(db_sweet)
+    
+    return db_sweet
+
+
+@router.post("/{sweet_id}/restock", response_model=SweetResponse)
+def restock_sweet(
+    sweet_id: int,
+    restock: RestockRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin)
+):
+    if restock.quantity <= 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Quantity must be positive"
+        )
+    
+    db_sweet = db.query(Sweet).filter(Sweet.id == sweet_id).first()
+    
+    if not db_sweet:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Sweet not found"
+        )
+    
+    db_sweet.quantity += restock.quantity
     db.commit()
     db.refresh(db_sweet)
     
