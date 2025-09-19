@@ -29,7 +29,7 @@ def test_create_sweet():
     }
     
     response = client.post(
-        "/api/sweets/create",
+        "/api/sweets",
         json=sweet_data,
         headers={"Authorization": f"Bearer {token}"}
     )

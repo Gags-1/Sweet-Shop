@@ -8,7 +8,7 @@ from app.utils import get_current_user
 
 router = APIRouter(prefix="/api/sweets", tags=["sweets"])
 
-@router.post("/create", response_model=SweetResponse)
+@router.post("", response_model=SweetResponse)
 def create_sweet(
     sweet: SweetCreate, 
     db: Session = Depends(get_db),
