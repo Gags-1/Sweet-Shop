@@ -30,7 +30,7 @@ def test_login_user():
     
     # Now try to login
     login_data = {
-        "username": "loginuser",
+        "email": "login@example.com",
         "password": "loginpass123"
     }
     
