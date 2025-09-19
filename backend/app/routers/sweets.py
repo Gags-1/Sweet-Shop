@@ -44,3 +44,29 @@ def get_sweets(
 ):
     sweets = db.query(Sweet).offset(skip).limit(limit).all()
     return sweets
+
+
+from fastapi import Query
+from typing import Optional
+
+@router.get("/search", response_model=List[SweetResponse])
+def search_sweets(
+    name: Optional[str] = Query(None),
+    category: Optional[str] = Query(None),
+    min_price: Optional[float] = Query(None),
+    max_price: Optional[float] = Query(None),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    query = db.query(Sweet)
+    
+    if name:
+        query = query.filter(Sweet.name.ilike(f"%{name}%"))
+    if category:
+        query = query.filter(Sweet.category.ilike(f"%{category}%"))
+    if min_price is not None:
+        query = query.filter(Sweet.price >= min_price)
+    if max_price is not None:
+        query = query.filter(Sweet.price <= max_price)
+    
+    return query.all()
