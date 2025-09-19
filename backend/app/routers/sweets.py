@@ -69,3 +69,29 @@ def search_sweets(
         query = query.filter(Sweet.price <= max_price)
     
     return query.all()
+
+
+@router.put("/{sweet_id}", response_model=SweetResponse)
+def update_sweet(sweet_id: int,sweet: SweetCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
+    db_sweet = db.query(Sweet).filter(Sweet.id == sweet_id).first()
+    
+    if not db_sweet:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Sweet not found")
+    
+    if sweet.name != db_sweet.name:
+        existing_sweet = db.query(Sweet).filter(Sweet.name == sweet.name).first()
+        if existing_sweet:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Sweet with this name already exists"
+            )
+    
+    db_sweet.name = sweet.name
+    db_sweet.category = sweet.category
+    db_sweet.price = sweet.price
+    db_sweet.quantity = sweet.quantity
+    
+    db.commit()
+    db.refresh(db_sweet)
+    
+    return db_sweet
