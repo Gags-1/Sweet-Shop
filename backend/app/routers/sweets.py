@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -33,3 +34,13 @@ def create_sweet(
     db.refresh(db_sweet)
     
     return db_sweet
+
+@router.get("", response_model=List[SweetResponse])
+def get_sweets(
+    skip: int = 0, 
+    limit: int = 100,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user) 
+):
+    sweets = db.query(Sweet).offset(skip).limit(limit).all()
+    return sweets
