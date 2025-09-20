@@ -3,7 +3,7 @@ from app.main import app
 client = TestClient(app)
 
 def test_search_sweets():
-    """Test searching sweets - This will FAIL initially"""
+    """Test searching sweets - This will FAIL because of no authorization"""
     # Search by category
     response = client.get("/api/sweets/search?category=Chocolate")
     

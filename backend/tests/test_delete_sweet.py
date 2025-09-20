@@ -11,7 +11,7 @@ def test_delete_sweet():
     
     # Get a sweet to delete
     # sweets_response = client.get("/api/sweets")
-    sweet_id = 3
+    sweet_id = 9
     
     # Try to delete
     response = client.delete(
