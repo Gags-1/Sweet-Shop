@@ -19,11 +19,3 @@ def test_get_sweets_authenticated():
     # This will FAIL initially
     assert response.status_code == 200
     assert isinstance(response.json(), list)
-
-def test_get_sweets_unauthenticated():
-    """Test getting sweets without authentication - This will FAIL initially"""
-    response = client.get("/api/sweets")
-    
-    # This will FAIL because the endpoint now requires authentication
-    assert response.status_code == 200
-    assert isinstance(response.json(), list)
