@@ -12,8 +12,8 @@ It features a RESTful API backend with **FastAPI** and a single-page frontend ap
 To view the application as a general user, simply **register as a new user** and enjoy exploring the sweets catalog and shopping features.
 
 ### Live Deployment
-You can access the live application [here](https://sweet-shop-frontend-hhvz.onrender.com/).
-
+You can access the live application [here]
+(https://sweet-shop-chi.vercel.app/)
 ---
 
 ## Project Details
